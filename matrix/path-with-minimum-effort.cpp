@@ -24,7 +24,7 @@ class Solution
             //effort , row,col
 
             priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>pq;
-            vector<vector<int>> dist(m,vector<int>(n,INT_MAX));
+            vector<vector<int>> dist(m,vector<int>(n,INT_MAX)); //min dist to reach the node
             dist[0][0]=0;
             pq.push({0,{0,0}});
 
@@ -33,11 +33,10 @@ class Solution
 
             while(!pq.empty())
             {
-                auto [effort,pos]=pq.top();
+                auto [effort,node]=pq.top();
                 pq.pop();
-
-                int r=pos.first;
-                int c=pos.second;
+                int r=node.first;
+                int c=node.second;
 
                 if(r==m-1 && c==n-1)
                 {
@@ -54,13 +53,13 @@ class Solution
                     int nr=r+dr[k];
                     int nc=c+dc[k];
 
-                    if(nr<0 || nr>=m || nc<0 || nc>=n)
+                    if(nr>=m || nc>=n || nr<0 || nc<0)
                     {
                         continue;
                     }
 
-                    int edge=abs(heights[r][c] -heights[nr][nc]);
-                    int newEffort =max(effort,edge);
+                    int edge=abs(heights[nr][nc]-heights[r][c]);
+                    int newEffort=max(effort,edge);
 
                     if(newEffort<dist[nr][nc])
                     {
