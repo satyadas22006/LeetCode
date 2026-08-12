@@ -1,54 +1,59 @@
-#include <iostream>
-#include <vector>
-#include <array>
-#include <string>
-#include <unordered_map>
-#include <algorithm>
-#include <stack>
-#include <set>
-#include <unordered_set>
-#include <queue>
-#include <map>
-#include <math.h>
-using namespace std;
-
-
 class Solution 
 {
-    public:
-    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) 
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, 
+                          int src, int dst, int k) 
     {
-        //int tcost=0;
-        //int stops=0;
-        //cost dest stops
-        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq;
-        //pq.push({0,src});
-    //    vector<int> vis(n,0);
+        // adjacency list
+        vector<vector<pair<int,int>>> adj(n);
 
-        pq.push({0,{src,0}});
+        for(auto x : flights)
+        {
+            adj[x[0]].push_back({x[1], x[2]});
+        }
+
+        // {cost, {destination, flightsTaken}}
+        priority_queue<
+            pair<int,pair<int,int>>,
+            vector<pair<int,pair<int,int>>>,
+            greater<pair<int,pair<int,int>>>
+        > pq;
+
+        pq.push({0, {src, 0}});
+
         while(!pq.empty())
         {
-            auto [cost,info]=pq.top();
+            auto [cost, info] = pq.top();
             pq.pop();
-            int stops=info.second;
-            int dest=info.first;
-            if(dest==dst)
+
+            int stops = info.second;
+            int dest = info.first;
+
+            if(dest == dst)
             {
                 return cost;
             }
-            if(stops==k+1)
+
+            if(stops == k + 1)
             {
                 continue;
             }
-            for(auto x:flights)
+
+            // only check flights leaving current city
+            for(auto x : adj[dest])
             {
-                if(x[0]==dest)
-                {
-                    int temp=cost+x[2];
-                    pq.push({temp,{x[1],stops+1}});
-                }   
+                int next = x.first;
+                int price = x.second;
+
+                int temp = cost + price;
+
+                pq.push({
+                    temp,
+                    {next, stops + 1}
+                });
             }
         }
+
         return -1;
     }
 };
