@@ -21,7 +21,7 @@ class Solution
             int n=grid.size();
             //stores height and node
             priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq;
-            pq.push({0,{0,0}});
+            pq.push({grid[0][0],{0,0}});
             int dx[4]={1,-1,0,0};
             int dy[4]={0,0,1,-1};
 
