@@ -18,8 +18,8 @@ class Solution
     public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) 
     {
-        int tcost=0;
-        int stops=0;
+        //int tcost=0;
+        //int stops=0;
         //cost dest stops
         priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq;
         //pq.push({0,src});
@@ -32,16 +32,13 @@ class Solution
             pq.pop();
             int stops=info.second;
             int dest=info.first;
+            if(dest==dst)
+            {
+                return cost;
+            }
             if(stops==k+1)
             {
-                if(dest==dst)
-                {
-                    return cost;
-                }
-                else
-                {
-                    continue;
-                }
+                continue;
             }
             for(auto x:flights)
             {
