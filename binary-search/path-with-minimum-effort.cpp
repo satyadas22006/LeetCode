@@ -17,54 +17,42 @@ class Solution
     public:
         int minimumEffortPath(vector<vector<int>>& heights) 
         {
-            int ans=INT_MIN;
-            int m=heights.size(); //rows
-            int n=heights[0].size(); //columns
-
-            //effort , row,col
-
-            priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>pq;
-            vector<vector<int>> dist(m,vector<int>(n,INT_MAX)); //min dist to reach the node
-            dist[0][0]=0;
+            int m=heights.size();
+            int n=heights[0].size();
+            vector<vector<int>> mineffort(m,vector<int>(n,INT_MAX));
+            priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq;
             pq.push({0,{0,0}});
-
-            int dr[]={-1,1,0,0};
-            int dc[]={0,0,-1,1};
-
+            int dx[4]={1,-1,0,0};
+            int dy[4]={0,0,-1,1};
             while(!pq.empty())
             {
                 auto [effort,node]=pq.top();
                 pq.pop();
-                int r=node.first;
-                int c=node.second;
-
-                if(r==m-1 && c==n-1)
-                {
-                    return effort;
-                }
-
-                if(effort>dist[r][c])
+                int x=node.first;
+                int y=node.second;
+                if(effort>mineffort[x][y])
                 {
                     continue;
                 }
-
+                if(x==m-1 && y==n-1)
+                {
+                    return effort;
+                }
                 for(int k=0;k<4;k++)
                 {
-                    int nr=r+dr[k];
-                    int nc=c+dc[k];
+                    int nx=x+dx[k];
+                    int ny=y+dy[k];
 
-                    if(nr>=m || nc>=n || nr<0 || nc<0)
+                    if(nx>=m || ny>=n || nx<0 || ny<0)
                     {
                         continue;
                     }
-
-                    int edge=abs(heights[nr][nc]-heights[r][c]);
-                    int newEffort=max(effort,edge);
-
-                    if(newEffort<dist[nr][nc])
+                    int edge=abs(heights[nx][ny]-heights[x][y]);
+                    int h=max(effort,edge);
+                    if(h<mineffort[nx][ny])
                     {
-                        dist[nr][nc]=newEffort;
-                        pq.push({newEffort,{nr,nc}});
+                        mineffort[nx][ny]=h;
+                        pq.push({h,{nx,ny}});
                     }
                 }
             }
