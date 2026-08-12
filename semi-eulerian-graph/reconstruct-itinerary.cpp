@@ -20,7 +20,7 @@ class Solution
         vector<string> ans;
         void dfs(string start)
         {
-            while(!adj[start].size())
+            while(!adj[start].empty())
             {
                 string next=adj[start].top();
                 adj[start].pop();
