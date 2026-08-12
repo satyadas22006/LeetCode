@@ -4,7 +4,7 @@ public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, 
                           int src, int dst, int k) 
     {
-        // adjacency list
+        // adj[u] = {v, cost}
         vector<vector<pair<int,int>>> adj(n);
 
         for(auto x : flights)
@@ -12,12 +12,17 @@ public:
             adj[x[0]].push_back({x[1], x[2]});
         }
 
-        // {cost, {destination, flightsTaken}}
+        // {cost, {city, flightsTaken}}
         priority_queue<
             pair<int,pair<int,int>>,
             vector<pair<int,pair<int,int>>>,
             greater<pair<int,pair<int,int>>>
         > pq;
+
+        // dist[city][flightsTaken]
+        vector<vector<int>> dist(n, vector<int>(k + 2, INT_MAX));
+
+        dist[src][0] = 0;
 
         pq.push({0, {src, 0}});
 
@@ -26,31 +31,33 @@ public:
             auto [cost, info] = pq.top();
             pq.pop();
 
-            int stops = info.second;
-            int dest = info.first;
+            int city = info.first;
+            int flightsTaken = info.second;
 
-            if(dest == dst)
-            {
+            if(city == dst)
                 return cost;
-            }
 
-            if(stops == k + 1)
-            {
+            if(flightsTaken == k + 1)
                 continue;
-            }
 
-            // only check flights leaving current city
-            for(auto x : adj[dest])
+            // Outdated state
+            if(cost > dist[city][flightsTaken])
+                continue;
+
+            for(auto [next, price] : adj[city])
             {
-                int next = x.first;
-                int price = x.second;
+                int newCost = cost + price;
+                int newFlights = flightsTaken + 1;
 
-                int temp = cost + price;
+                if(newCost < dist[next][newFlights])
+                {
+                    dist[next][newFlights] = newCost;
 
-                pq.push({
-                    temp,
-                    {next, stops + 1}
-                });
+                    pq.push({
+                        newCost,
+                        {next, newFlights}
+                    });
+                }
             }
         }
 
