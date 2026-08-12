@@ -50,11 +50,23 @@ class Solution
                     {
                         continue;
                     }
-                    int newtime=max(time,grid[nx][ny]);
-                    if(newtime<mintime[nx][ny])
+                    if(time>=grid[nx][ny])
                     {
-                        mintime[nx][ny]=newtime;
-                        pq.push({newtime,{nx,ny}});
+                        if(time<mintime[nx][ny])
+                        {
+                            mintime[nx][ny]=time;
+                            pq.push({time,{nx,ny}});
+                        }
+                    }
+                    if(time<grid[nx][ny])
+                    {
+                        int newtime=grid[nx][ny];
+
+                        if(newtime<mintime[nx][ny])
+                        {
+                            mintime[nx][ny]=newtime;
+                            pq.push({newtime,{nx,ny}});
+                        }
                     }
                 }
             }
