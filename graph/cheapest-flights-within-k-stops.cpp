@@ -25,14 +25,7 @@ class Solution
         //pq.push({0,src});
     //    vector<int> vis(n,0);
 
-        for(auto e:flights)
-        {
-            if(e[0]!=src)
-            {
-                continue;
-            }
-            pq.push({e[2],{e[1],1}}); //added cost and destination
-        }
+        pq.push({0,{src,0}});
         while(!pq.empty())
         {
             auto [cost,info]=pq.top();
