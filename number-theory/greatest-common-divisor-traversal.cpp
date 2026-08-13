@@ -12,107 +12,116 @@
 #include <math.h>
 using namespace std;
 
+
 class Solution 
 {
-public:
-    vector<int> parent;
-    vector<int> rank;
-
-    int find(int x)
-    {
-        if(parent[x] == x)
+    public:
+        vector<int> parent;
+        vector<int> rank;
+        int find(int x)
         {
-            return x;
-        }
-
-        return parent[x] = find(parent[x]);
-    }
-
-    bool unite(int u,int v)
-    {
-        int pu=find(u);
-        int pv=find(v);
-
-        if(pu==pv)
-        {
-            return false;
-        }
-
-        if(rank[pu]<rank[pv])
-        {
-            parent[pu]=pv;
-        }
-        else if(rank[pu]>rank[pv])
-        {
-            parent[pv]=pu;
-        }
-        else
-        {
-            parent[pu]=pv;
-            rank[pv]++;
-        }
-
-        return true;
-    }
-
-    int gcd(int a,int b)
-    {
-        while(b)
-        {
-            int temp=a%b;
-            a=b;
-            b=temp;
-        }
-
-        return a;
-    }
-
-    bool canTraverseAllPairs(vector<int>& nums) 
-    {
-        int n=nums.size();
-
-        if(n==1)
-        {
-            return true;
-        }
-
-        for(int x:nums)
-        {
-            if(x==1)
+            if(parent[x]==x)
             {
+                return x;
+            }
+            return parent[x]=find(parent[x]);
+        }
+        bool unite(int u,int v)
+        {
+            int pu=find(u);
+            int pv=find(v);
+
+            if(pu==pv)
+            {
+                //already same parent exists
                 return false;
             }
-        }
 
-        parent.resize(n);
-        rank.assign(n,0);
-
-        for(int i=0;i<n;i++)
-        {
-            parent[i]=i;
-        }
-
-        for(int i=0;i<n;i++)
-        {
-            for(int j=i+1;j<n;j++)
+            if(rank[pu]<rank[pv])
             {
-                if(gcd(nums[i],nums[j]) > 1)
+                parent[pu]=pv;
+            }
+            else if(rank[pu]>rank[pv])
+            {
+                parent[pv]=pu;
+            }
+            else
+            {
+                parent[pu]=pv;
+                rank[pv]++;
+            }
+
+            return true;
+
+        }
+        int gcd(int a,int b)
+        {
+            int ans=1;
+            for(int i=1;i<=min(a,b);i++)
+            {
+                if(a%i==0 && b%i==0)
                 {
-                    unite(i,j);
+                    ans=i;
                 }
             }
+            return ans;
         }
-
-        int p=find(0);
-
-        for(int i=1;i<n;i++)
+        bool canTraverseAllPairs(vector<int>& nums) 
         {
-            if(find(i)!=p)
+            //build dsu
+            int n=nums.size();
+            parent.resize(n);
+            rank.assign(n,0);
+            for(int i=0;i<n;i++)
             {
-                return false;
+                parent[i]=i; //parents find krdiya sabka
             }
-        }
 
-        return true;
-    }
+            unordered_map <int,int> owner;
+            for(int i=0;i<n;i++)
+            {
+                int x=nums[i];
+                for(int p=2;p*p<=x;p++)
+                {
+                    if(x%p==0)
+                    {
+                        if(owner.count(p))
+                        {
+                            unite(i,owner[p]);
+                        }
+                        else
+                        {
+                            owner[p]=i;
+                        }
+
+                        while(x%p==0)
+                        {
+                            x/=p;
+                        }
+                    }
+                }
+                if(x>1)
+                {
+                    if(owner.count(x))
+                    {
+                        unite(i,owner[x]);
+                    }
+                    else
+                    {
+                        owner[x]=i;
+                    }
+                }
+            }
+
+            int p=find(0);
+
+            for(int i=1;i<n;i++)
+            {
+                if(find(i)!=p)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 };
