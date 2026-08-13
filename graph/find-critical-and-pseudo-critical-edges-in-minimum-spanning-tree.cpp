@@ -1,153 +1,175 @@
+#include <iostream>
+#include <vector>
+#include <array>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+#include <stack>
+#include <set>
+#include <unordered_set>
+#include <queue>
+#include <map>
+#include <math.h>
+using namespace std;
+
+
 class Solution 
 {
-public:
-    vector<int> parent,rank;
+    public:
+        vector<int> parent,rank;
 
-    int find(int x)
-    {
-        if(parent[x]==x)
-            return x;
-
-        return parent[x]=find(parent[x]);
-    }
-
-    bool unite(int u,int v)
-    {
-        int pu=find(u);
-        int pv=find(v);
-
-        if(pu==pv)
-            return false;
-
-        if(rank[pu]<rank[pv])
-            parent[pu]=pv;
-        else if(rank[pu]>rank[pv])
-            parent[pv]=pu;
-        else
+        int find(int x)
         {
-            parent[pu]=pv;
-            rank[pv]++;
+            if(parent[x]==x)
+            {
+                return x;
+            }
+            return parent[x]=find(parent[x]);
         }
 
-        return true;
-    }
-
-    int cost_mst(int n, vector<int>& skip,
-                 vector<vector<int>>& edges,
-                 unordered_map<int,int>& appear)
-    {
-        parent.resize(n);
-        rank.assign(n,0);
-
-        for(int i=0;i<n;i++)
-            parent[i]=i;
-
-        int cost=0;
-        int count=0;
-
-        for(auto &e:edges)
+        bool unite(int u,int v)
         {
-            if(e==skip)
-                continue;
+            int pu=find(u);
+            int pv=find(v);
 
-            int x=e[0];
-            int y=e[1];
-            int w=e[2];
-
-            if(find(x)!=find(y))
+            if(pu==pv)
             {
-                unite(x,y);
-
-                // keep your appear map
-                appear[e[3]]++;
-
-                cost+=w;
-                count++;
-
-                if(count==n-1)
-                    break;
+                return false;
             }
+
+            if(rank[pu]<rank[pv])
+            {
+                parent[pu]=pv;
+            }
+            else if(rank[pu]>rank[pv])
+            {
+                parent[pv]=pu;
+            }
+            else
+            {
+                parent[pu]=pv;
+                rank[pv]++;
+            }
+
+            return true;
         }
 
-        if(count!=n-1)
-            return INT_MAX;
-
-        return cost;
-    }
-
-    vector<vector<int>> findCriticalAndPseudoCriticalEdges(
-        int n, vector<vector<int>>& edges) 
-    {
-        // original index
-        for(int i=0;i<edges.size();i++)
-            edges[i].push_back(i);
-
-        sort(edges.begin(),edges.end(),
-            [](vector<int>& a,vector<int>& b)
-            {
-                return a[2]<b[2];
-            });
-
-        vector<vector<int>> ans(2);
-
-        unordered_map<int,int> appear;
-        vector<int> temp={-1,-1,-1,-1};
-        int min_cost=cost_mst(n,temp,edges,appear);
-
-        for(auto &e:edges)
+        int cost_mst(int n,vector<int>& skip,
+                     vector<vector<int>>& edges)
         {
-            // reset appear for this MST
-            appear.clear();
+            parent.resize(n);
+            rank.assign(n,0);
 
-            int newcost=cost_mst(n,e,edges,appear);
-
-            if(newcost>min_cost)
+            for(int i=0;i<n;i++)
             {
-                ans[0].push_back(e[3]);
-                continue;
+                parent[i]=i;
             }
 
-            // Check whether this edge appears in an MST
-            if(newcost==min_cost)
+            int cost=0;
+            int count=0;
+
+            for(auto &e:edges)
             {
-                // e was skipped, so we need to force it
+                if(e==skip)
+                {
+                    continue;
+                }
+
+                int x=e[0];
+                int y=e[1];
+                int w=e[2];
+
+                if(unite(x,y))
+                {
+                    cost+=w;
+                    count++;
+
+                    if(count==n-1)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if(count!=n-1)
+            {
+                return INT_MAX;
+            }
+
+            return cost;
+        }
+
+        vector<vector<int>> findCriticalAndPseudoCriticalEdges(
+            int n,vector<vector<int>>& edges) 
+        {
+            // original index
+            for(int i=0;i<edges.size();i++)
+            {
+                edges[i].push_back(i);
+            }
+
+            sort(edges.begin(),edges.end(),
+                [](vector<int>& a,vector<int>& b)
+                {
+                    return a[2]<b[2];
+                });
+
+            vector<vector<int>> ans(2);
+            vector<int> temp={-1,-1,-1,-1};
+            int min_cost=cost_mst(n,temp,edges);
+
+            for(int i=0;i<edges.size();i++)
+            {
+                // REMOVE edge
+                int newcost=cost_mst(n,edges[i],edges);
+
+                if(newcost>min_cost)
+                {
+                    // critical
+                    ans[0].push_back(edges[i][3]);
+                    continue;
+                }
+
+                // FORCE edge i
                 parent.resize(n);
                 rank.assign(n,0);
 
-                for(int i=0;i<n;i++)
-                    parent[i]=i;
+                for(int j=0;j<n;j++)
+                {
+                    parent[j]=j;
+                }
 
-                int cost=e[2];
+                int cost=edges[i][2];
                 int count=1;
 
-                unite(e[0],e[1]);
+                unite(edges[i][0],edges[i][1]);
 
-                appear.clear();
-                appear[e[3]]++;
-
-                for(auto &x:edges)
+                for(auto &e:edges)
                 {
-                    if(x==e)
-                        continue;
-
-                    if(unite(x[0],x[1]))
+                    if(e==edges[i])
                     {
-                        cost+=x[2];
+                        continue;
+                    }
+
+                    if(unite(e[0],e[1]))
+                    {
+                        cost+=e[2];
                         count++;
-                        appear[x[3]]++;
 
                         if(count==n-1)
+                        {
                             break;
+                        }
                     }
                 }
 
                 if(cost==min_cost)
                 {
-                    ans[1].push_back(e[3]);
+                    // pseudo-critical
+                    ans[1].push_back(edges[i][3]);
                 }
             }
-        }
 
-        return ans;
-    }
+            return ans;
+        }
 };
