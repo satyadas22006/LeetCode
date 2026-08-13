@@ -83,30 +83,29 @@ class Solution
                 int x=nums[i];
                 for(int p=2;p*p<=x;p++)
                 {
-                    if(x%p==0) //is p is a prime factor
+                    if(x%p==0)
                     {
-                        //p is a prime factor then check if the prime factor already is existing or not
+                        //prime
                         if(last[p]!=-1)
                         {
-                            //prime p already existed before i;
                             unite(i,last[p]);
                         }
 
-                        last[p]=i; 
-                        //make it latest, agar h toh make it, agar tha toh update it latest to i
+                        last[p]=i;
 
                         while(x%p==0)
                         {
-                            //before it goes into the loop again to find its prime, we make sure p doesnt appear again so we divide the fuckout of it
                             x/=p;
                         }
                     }
                 }
+
                 if(x>1)
                 {
+                    //prime itself
                     if(last[x]!=-1)
                     {
-                        //you can only unite when it already is present in a graph existing prime
+                        //even if x=4, it will go and it wud have already joined in
                         unite(i,last[x]);
                     }
                     last[x]=i;
