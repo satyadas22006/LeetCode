@@ -54,9 +54,15 @@ class Solution
             return true;
         }
 
+        // YOUR cost_mst function
         int cost_mst(int n,vector<int>& skip,
-                     vector<vector<int>>& edges)
+                     vector<vector<int>>& edges,
+                     int force)
         {
+            int cost=0;
+            int count=0;
+
+            // reset DSU
             parent.resize(n);
             rank.assign(n,0);
 
@@ -65,8 +71,18 @@ class Solution
                 parent[i]=i;
             }
 
-            int cost=0;
-            int count=0;
+            // force edge first
+            if(force!=-1)
+            {
+                int x=edges[force][0];
+                int y=edges[force][1];
+                int w=edges[force][2];
+
+                unite(x,y);
+
+                cost+=w;
+                count++;
+            }
 
             for(auto &e:edges)
             {
@@ -115,13 +131,17 @@ class Solution
                 });
 
             vector<vector<int>> ans(2);
+
+            // nothing to skip
             vector<int> temp={-1,-1,-1,-1};
-            int min_cost=cost_mst(n,temp,edges);
+
+            // normal MST
+            int min_cost=cost_mst(n,temp,edges,-1);
 
             for(int i=0;i<edges.size();i++)
             {
                 // REMOVE edge
-                int newcost=cost_mst(n,edges[i],edges);
+                int newcost=cost_mst(n,edges[i],edges,-1);
 
                 if(newcost>min_cost)
                 {
@@ -130,40 +150,10 @@ class Solution
                     continue;
                 }
 
-                // FORCE edge i
-                parent.resize(n);
-                rank.assign(n,0);
+                // FORCE edge
+                newcost=cost_mst(n,temp,edges,i);
 
-                for(int j=0;j<n;j++)
-                {
-                    parent[j]=j;
-                }
-
-                int cost=edges[i][2];
-                int count=1;
-
-                unite(edges[i][0],edges[i][1]);
-
-                for(auto &e:edges)
-                {
-                    if(e==edges[i])
-                    {
-                        continue;
-                    }
-
-                    if(unite(e[0],e[1]))
-                    {
-                        cost+=e[2];
-                        count++;
-
-                        if(count==n-1)
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                if(cost==min_cost)
+                if(newcost==min_cost)
                 {
                     // pseudo-critical
                     ans[1].push_back(edges[i][3]);
