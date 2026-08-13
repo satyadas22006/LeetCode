@@ -56,15 +56,13 @@ class Solution
         }
         int gcd(int a,int b)
         {
-            int ans=1;
-            for(int i=1;i<=min(a,b);i++)
+            while(b)
             {
-                if(a%i==0 && b%i==0)
-                {
-                    ans=i;
-                }
+                int temp=a%b;
+                a=b;
+                b=temp;
             }
-            return ans;
+            return a;
         }
         bool canTraverseAllPairs(vector<int>& nums) 
         {
