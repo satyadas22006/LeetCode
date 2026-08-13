@@ -77,39 +77,39 @@ class Solution
                 parent[i]=i; //parents find krdiya sabka
             }
 
-            unordered_map <int,int> owner;
+            vector<int> last(100001,-1);
             for(int i=0;i<n;i++)
             {
                 int x=nums[i];
                 for(int p=2;p*p<=x;p++)
                 {
-                    if(x%p==0)
+                    if(x%p==0) //is p is a prime factor
                     {
-                        if(owner.count(p))
+                        //p is a prime factor then check if the prime factor already is existing or not
+                        if(last[p]!=-1)
                         {
-                            unite(i,owner[p]);
+                            //prime p already existed before i;
+                            unite(i,last[p]);
                         }
-                        else
-                        {
-                            owner[p]=i;
-                        }
+
+                        last[p]=i; 
+                        //make it latest, agar h toh make it, agar tha toh update it latest to i
 
                         while(x%p==0)
                         {
+                            //before it goes into the loop again to find its prime, we make sure p doesnt appear again so we divide the fuckout of it
                             x/=p;
                         }
                     }
                 }
                 if(x>1)
                 {
-                    if(owner.count(x))
+                    if(last[x]!=-1)
                     {
-                        unite(i,owner[x]);
+                        //you can only unite when it already is present in a graph existing prime
+                        unite(i,last[x]);
                     }
-                    else
-                    {
-                        owner[x]=i;
-                    }
+                    last[x]=i;
                 }
             }
 
