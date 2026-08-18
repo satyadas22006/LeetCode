@@ -12,39 +12,39 @@
 #include <math.h>
 using namespace std;
 
-class Solution 
-{
-    public:
-        int f(int ind,int amount, vector<vector<int>>& dp,vector<int>& coins)
+
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) 
+    {
+        int n=coins.size();
+        vector<vector<int>> dp(n,vector<int>(amount+1,0));
+        
+        for(int a=0;a<=amount;a++)
         {
-            if(ind==0)
+            if(a%coins[0]==0)
             {
-                if(amount%coins[0]==0)
+                dp[0][a]=1;
+            }
+        }
+
+        for(int ind=1;ind<n;ind++)
+        {
+            for(int a=0;a<=amount;a++)
+            {
+                int nottake=dp[ind-1][a];
+
+                int take=0;
+
+                if(coins[ind]<=a)
                 {
-                    return 1;
+                    take=dp[ind][a-coins[ind]];
                 }
-                return 0;
-            }
-            if(dp[ind][amount]!=-1)
-            {
-                return dp[ind][amount];
-            }
-            //2 ways take, keeping take till u cant, else dont take
-            int nottake=f(ind-1,amount,dp,coins);
-            int take=0;
 
-            if(coins[ind]<=amount)
-            {
-                take=f(ind,amount-coins[ind],dp,coins);
+                dp[ind][a]=take + nottake;
             }
+        }
 
-            return dp[ind][amount]=take+nottake;
-        }
-    public:
-        int change(int amount, vector<int>& coins) 
-        {
-            int n=coins.size()-1;
-            vector<vector<int>> dp(n+1,vector<int>(amount+1,-1));
-            return f(n,amount,dp,coins);       
-        }
+        return dp[n-1][amount];
+    }
 };
