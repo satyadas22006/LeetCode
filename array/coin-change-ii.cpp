@@ -18,7 +18,7 @@ public:
     int change(int amount, vector<int>& coins) 
     {
         int n=coins.size();
-        vector<vector<int>> dp(n,vector<int>(amount+1,0));
+        vector<vector<long long>> dp(n,vector<int>(amount+1,0));
         
         for(int a=0;a<=amount;a++)
         {
@@ -32,9 +32,9 @@ public:
         {
             for(int a=0;a<=amount;a++)
             {
-                int nottake=dp[ind-1][a];
+                long long nottake=dp[ind-1][a];
 
-                int take=0;
+                long long take=0;
 
                 if(coins[ind]<=a)
                 {
