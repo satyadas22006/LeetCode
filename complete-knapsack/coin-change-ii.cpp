@@ -1,50 +1,40 @@
-#include <iostream>
-#include <vector>
-#include <array>
-#include <string>
-#include <unordered_map>
-#include <algorithm>
-#include <stack>
-#include <set>
-#include <unordered_set>
-#include <queue>
-#include <map>
-#include <math.h>
-using namespace std;
-
-
 class Solution {
 public:
     int change(int amount, vector<int>& coins) 
     {
-        int n=coins.size();
-        vector<vector<long long>> dp(n,vector<long long>(amount+1,0));
-        
-        for(int a=0;a<=amount;a++)
+        int n = coins.size();
+
+        vector<long long> prev(amount + 1, 0);
+        vector<long long> curr(amount + 1, 0);
+
+        // Base case: only coins[0]
+        for(int a = 0; a <= amount; a++)
         {
-            if(a%coins[0]==0)
+            if(a % coins[0] == 0)
             {
-                dp[0][a]=1;
+                prev[a] = 1;
             }
         }
 
-        for(int ind=1;ind<n;ind++)
+        for(int ind = 1; ind < n; ind++)
         {
-            for(int a=0;a<=amount;a++)
+            for(int a = 0; a <= amount; a++)
             {
-                long long nottake=dp[ind-1][a];
+                long long nottake = prev[a];
 
-                long long take=0;
+                long long take = 0;
 
-                if(coins[ind]<=a)
+                if(coins[ind] <= a)
                 {
-                    take=dp[ind][a-coins[ind]];
+                    take = curr[a - coins[ind]];
                 }
 
-                dp[ind][a]=take + nottake;
+                curr[a] = take + nottake;
             }
+
+            prev = curr;
         }
 
-        return dp[n-1][amount];
+        return prev[amount];
     }
 };
