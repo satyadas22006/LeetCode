@@ -18,7 +18,7 @@ public:
     int change(int amount, vector<int>& coins) 
     {
         int n=coins.size();
-        vector<vector<long long>> dp(n,vector<int>(amount+1,0));
+        vector<vector<long long>> dp(n,vector<long long>(amount+1,0));
         
         for(int a=0;a<=amount;a++)
         {
