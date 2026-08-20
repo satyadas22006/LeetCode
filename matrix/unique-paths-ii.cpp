@@ -11,38 +11,50 @@
 #include <map>
 #include <math.h>
 using namespace std;
-
 class Solution 
 {
-    public:
-        int f(int r,int c,int m,int n,vector<vector<int>>& dp,vector<vector<int>>& obstacleGrid)
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) 
+    {
+        int m = obstacleGrid.size();
+        int n = obstacleGrid[0].size();
+
+        vector<vector<int>> dp(m, vector<int>(n, 0));
+
+        // Starting cell
+        if(obstacleGrid[0][0] == 1)
+            return 0;
+
+        dp[0][0] = 1;
+
+        for(int r = 0; r < m; r++)
         {
-            if(r<0 || c<0 || r>=m || c>=n)
+            for(int c = 0; c < n; c++)
             {
-                return 0;
+                // Skip starting cell
+                if(r == 0 && c == 0)
+                    continue;
+
+                // Obstacle
+                if(obstacleGrid[r][c] == 1)
+                {
+                    dp[r][c] = 0;
+                    continue;
+                }
+
+                int up = 0;
+                int left = 0;
+
+                if(r > 0)
+                    up = dp[r-1][c];
+
+                if(c > 0)
+                    left = dp[r][c-1];
+
+                dp[r][c] = up + left;
             }
-            if(obstacleGrid[r][c]==1)
-            {
-                return 0;
-            }
-            
-            if(r==m-1 && c==n-1)
-            {
-                return 1;
-            }
-            if(dp[r][c]!=-1)
-            {
-                return dp[r][c];
-            }
-            int btm=f(r+1,c,m,n,dp,obstacleGrid);
-            int rgt=f(r,c+1,m,n,dp,obstacleGrid);
-            return dp[r][c]=btm + rgt;
         }
-        int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) 
-        {
-            int m=obstacleGrid.size();
-            int n=obstacleGrid[0].size();
-            vector<vector<int>> dp(m,vector<int>(n,-1));
-            return f(0,0,m,n,dp,obstacleGrid);
-        }
+
+        return dp[m-1][n-1];
+    }
 };
