@@ -19,7 +19,7 @@ public:
         int m = text1.size();
         int n = text2.size();
 
-        vector<int> dp(m + 1,0);
+        vector<int> dp(n + 1,0);
         //shifted 1 index
         for(int i=1;i<=m;i++)
         {
