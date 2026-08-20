@@ -19,7 +19,7 @@ public:
         int m = text1.size();
         int n = text2.size();
 
-        vector<int> dp(n + 1,0);
+        vector<int> prev(n + 1,0),cur(n+1,0);
         //shifted 1 index
         for(int i=1;i<=m;i++)
         {
@@ -28,14 +28,15 @@ public:
                 if(text1[i-1]==text2[j-1])
                 {
                     //check the -1 index as we shifted earlier
-                    dp[j]=1+dp[j-1];
+                    cur[j]=1+prev[j-1];
                 }
                 else
                 {
-                    dp[j]=max(dp[j],dp[j-1]);
+                    cur[j]=max(prev[j],cur[j-1]);
                 }
             }
+            prev=cur;
         }
-        return dp[n];
+        return prev[n];
     }
 };
