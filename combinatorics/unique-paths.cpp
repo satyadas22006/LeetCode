@@ -17,21 +17,22 @@ class Solution
     public:
         int uniquePaths(int m, int n) 
         {
-            vector<int> prev(n+1,0);
-            vector<int> curr(n+1,0);
-            for(int j=1;j<=n;j++)
+            //prev and 
+            vector<int> prev(m+1) , curr(m+1); // row ka size 
+            for(int i=1;i<=m;i++)
             {
-                prev[j]=1;
+                prev[i]=1; // all cells set to 1
             }
-            for(int i=2;i<=m;i++)
+            for(int i=2;i<=n;i++)
             {
                 curr[1]=1;
-                for(int j=2;j<=n;j++)
+                for(int j=2;j<=m;j++)
                 {
                     curr[j]=prev[j] + curr[j-1];
                 }
-                prev=curr;   
+                prev=curr;
             }
-            return prev[n];
+
+            return prev[m];
         }
 };
