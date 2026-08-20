@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <vector>
 #include <array>
@@ -13,32 +12,28 @@
 #include <math.h>
 using namespace std;
 
-
-
 class Solution 
 {
     public:
-        int f(int r,int c,int m,int n,vector<vector<int>>& dp)
-        {
-            if(r<0 || c<0 || r>=m || c>=n)
-            {
-                return 0;
-            }
-            if(r==m-1 && c==n-1)
-            {
-                return 1;
-            }
-            if(dp[r][c]!=-1)
-            {
-                return dp[r][c];
-            }
-            int btm=f(r+1,c,m,n,dp);
-            int rgt=f(r,c+1,m,n,dp);
-            return dp[r][c]=btm + rgt;
-        }
         int uniquePaths(int m, int n) 
         {
-            vector<vector<int>> dp(m,vector<int>(n,-1));
-            return f(0,0,m,n,dp);
+            vector<vector<int>> dp(m+1,vector<int>(n+1,-1));
+            for(int i=1;i<=m;i++)
+            {
+                dp[i][1]=1;
+            }
+            for(int j=1;j<=n;j++)
+            {
+                dp[1][j]=1;
+            }
+            for(int i=2;i<=m;i++)
+            {
+                for(int j=2;j<=n;j++)
+                {
+                    dp[i][j]=dp[i-1][j] + dp[i][j-1];
+                }   
+            }
+
+            return dp[m][n];
         }
 };
