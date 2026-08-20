@@ -20,30 +20,24 @@ class Solution
             int m=grid.size();
             int n=grid[0].size();
             //stores the minimal sum
-            vector<vector<int>> dp(m,vector<int>(n,-1));
+            vector<int> dp(n,0);
             //make the base case
-            dp[0][0]=grid[0][0];
+            dp[0]=grid[0][0];
             for(int r=0;r<m;r++)
             {
                 for(int c=0;c<n;c++)
-                {
+                { 
                     if(r==0 && c==0)
                     {
                         continue;
                     }
-                    int dw=INT_MAX;
-                    if(c>0)
-                    {
-                        dw=dp[r][c-1];
-                    }
-                    int rg=INT_MAX;
-                    if(r>0)
-                    {
-                        rg=dp[r-1][c];
-                    }
-                    dp[r][c]=grid[r][c] + min(dw,rg);
+                    int up=INT_MAX;
+                    int lf=INT_MAX;
+                    if(r>0) up=dp[c];
+                    if(c>0) lf=dp[c-1];
+                    dp[c]=grid[r][c] + min(up,lf);
                 }
             }
-            return dp[m-1][n-1];
+            return dp[n-1];
         }
 };
