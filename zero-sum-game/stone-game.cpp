@@ -28,8 +28,8 @@ class Solution
                 return dp[s][e];
             }
 
-            int take_start=piles[s] + f(s+1,e,piles,dp);
-            int take_end=piles[e] + f(s,e-1,piles,dp);
+            int take_start=piles[s] - f(s+1,e,piles,dp);
+            int take_end=piles[e] - f(s,e-1,piles,dp);
 
             return dp[s][e]=max(take_end,take_start);
         }
