@@ -29,16 +29,15 @@ class Solution
             {
                 return dp[i][j];
             }
-            //returns the minimum operations for a to go to target
             if(a[i]==b[j])
             {
-                //equal characters 
-                return f(i-1,j-1,a,b,dp);
+                return dp[i][j]=f(i-1,j-1,a,b,dp);
             }
-            //delete from a and thus a size is reduced i to i-1;
-            //insert to a that means sure equal i+1-1,j-1
-            //replaced(done)now go to next
-            return dp[i][j]=1+min(f(i-1,j,a,b,dp),min(f(i,j-1,a,b,dp),f(i-1,j-1,a,b,dp)));
+            else
+            {
+                //3 posibilities
+                return dp[i][j]=1+min(f(i-1,j-1,a,b,dp),min(f(i-1,j,a,b,dp),f(i,j-1,a,b,dp)));
+            }
         }
         int minDistance(string word1, string word2) 
         {
