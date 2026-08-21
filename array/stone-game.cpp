@@ -22,15 +22,15 @@ class Solution
             {
                 return piles[s];
             }
-
             if(dp[s][e]!=-1)
             {
                 return dp[s][e];
             }
-
+            //no need to track current player
+            //take s - opponent ka biggest adv
             int take_start=piles[s] - f(s+1,e,piles,dp);
+            //take e - opponent ka biggest adv
             int take_end=piles[e] - f(s,e-1,piles,dp);
-
             return dp[s][e]=max(take_end,take_start);
         }
         bool stoneGame(vector<int>& piles) 
@@ -40,6 +40,5 @@ class Solution
             //-1 not vis 0 means bob wins 1 means alice wins
             vector<vector<int>> dp(n,vector<int>(n,-1));
             return f(0,n-1,piles,dp)>0;
-            
         }
 };
