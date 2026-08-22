@@ -45,18 +45,18 @@ class Solution
             for(int i=0;i<=word1.size();i++)
             {
                 //0 represents -1
-                dp[i][0]=i+1;
+                dp[i][0]=i;
             }
             for(int j=0;j<=word2.size();j++)
             {
-                dp[0][j]=j+1;
+                dp[0][j]=j;
             }
             //1-1 means starting position
             for(int i=1;i<=word1.size();i++)
             {
                 for(int j=1;j<=word2.size();j++)
                 {
-                    if(word1[i]==word2[j])
+                    if(word1[i-1]==word2[j-1])
                     {
                         //if equal then move to next
                         dp[i][j]=dp[i-1][j-1];
