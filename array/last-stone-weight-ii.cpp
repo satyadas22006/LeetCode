@@ -14,29 +14,6 @@ using namespace std;
 class Solution 
 {
     public:
-        // int f(int target,int i,vector<int>& stones,vector<vector<int>>& dp)
-        // {
-        //     if(i>=stones.size())
-        //     {
-        //         return 0;
-        //     }
-        //     if(target==0)
-        //     {
-        //         return 0;
-        //     }   
-        //     //2 options take or not_take
-        //     if(dp[i][target]!=-1)
-        //     {
-        //         return dp[i][target];
-        //     }
-        //     int take=INT_MIN;
-        //     if(stones[i]<=target)
-        //     {
-        //         take=stones[i]+f(target-stones[i],i+1,stones,dp);
-        //     }
-        //     int not_take=f(target,i+1,stones,dp);
-        //     return dp[i][target]=max(take,not_take);
-        //}
         int lastStoneWeightII(vector<int>& stones) 
         {
             //sort(stones.begin(),stones.end());
