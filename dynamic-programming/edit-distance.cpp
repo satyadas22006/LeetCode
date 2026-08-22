@@ -68,6 +68,6 @@ class Solution
                     }
                 }
             }
-            return dp[word1.size()-1][word2.size()-1];
+            return dp[word1.size()][word2.size()];
         }
 };
