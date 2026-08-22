@@ -12,27 +12,46 @@
 #include <math.h>
 using namespace std;
 
-class Solution 
-{
-    public:
-        int maxProfit(vector<int>& prices) 
+class Solution {
+public:
+    int f(int i,int state,vector<int>& prices,vector<vector<int>>& dp)
+    {
+        if(i>=prices.size())
         {
-            int n=prices.size();
-            vector<int> s0(n,-1);
-            vector<int> s1(n,-1);
-            vector<int> s2(n,-1);
-            //take rest only
-            s0[0]=0;
-            s1[0]=-prices[0];
-            s2[0]=INT_MIN;
-
-            for(int i=1;i<prices.size();i++)
-            {
-                s0[i]=max(s0[i-1],s2[i-1]);
-                s1[i]=max(s1[i-1],s0[i-1]-prices[i]);
-                s2[i]=s1[i-1]+prices[i];
-            }
-
-            return max(s0[n-1],s2[n-1]);
+            return 0;
         }
+        if(dp[i][state]!=-1)
+        {
+            return dp[i][state];
+        }
+
+        if(state==0)
+        {
+            //rested with no stock 
+            //rest again
+            //buy smth
+            int rest=f(i+1,0,prices,dp);
+            int buy=-prices[i]+f(i+1,1,prices,dp);
+            return dp[i][state]=max(rest,buy); 
+        }
+        else if(state==1)
+        {
+            //have stcok
+            //rest or sell
+            int hold=f(i+1,1,prices,dp);
+            int sell=prices[i]+f(i+1,2,prices,dp);
+            return dp[i][state]=max(hold,sell);
+        }
+        //once sold go and rest
+        return dp[i][state]=f(i+1,0,prices,dp);
+    }
+    int maxProfit(vector<int>& prices) 
+    {
+        int n=prices.size();
+        vector<vector<int>> dp(n,vector<int>(3,-1));
+        //0-rest
+        //1-bought
+        //2-just sold
+        return f(0,0,prices,dp);    
+    }
 };
