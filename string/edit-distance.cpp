@@ -15,20 +15,28 @@ using namespace std;
 class Solution 
 {
     public:
-        int f(int i,int j,string a,string b,vector<vector<int>> &dp)
-        {
-            if(i<0) return j+1;
-            if(j<0) return i+1;
-            if(dp[i][j]!=-1) return dp[i][j];
-            if(a[i]==b[j])
-            {
-                //equal- no changes needed go next
-                return dp[i][j]=f(i-1,j-1,a,b,dp);
-            }
-            return dp[i][j]=1+min(f(i-1,j-1,a,b,dp),min(f(i-1,j,a,b,dp),f(i,j-1,a,b,dp)));
-        }
+        // int f(int i,int j,string a,string b,vector<vector<int>> &dp)
+        // {
+        //     if(i<0) return j+1;
+        //     if(j<0) return i+1;
+        //     if(dp[i][j]!=-1) return dp[i][j];
+        //     if(a[i]==b[j])
+        //     {
+        //         //equal- no changes needed go next
+        //         return dp[i][j]=f(i-1,j-1,a,b,dp);
+        //     }
+        //     return dp[i][j]=1+min(f(i-1,j-1,a,b,dp),min(f(i-1,j,a,b,dp),f(i,j-1,a,b,dp)));
+        // }
         int minDistance(string word1, string word2) 
         {
+            if(word1.size()==0)
+            {
+                return word2.size();
+            }
+            if(word2.size()==0)
+            {
+                return word1.size();
+            }
             vector<vector<int>> dp(word1.size()+1,vector<int>(word2.size()+1,-1));
             for(int i=0;i<=word1.size();i++)
             {
