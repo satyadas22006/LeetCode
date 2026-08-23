@@ -56,6 +56,10 @@ class Solution
                 }
                 return false;
             }
+            if(x+y<z)
+            {
+                return false;
+            }
             vector<vector<int>> dp(x+1,vector<int>(y+1,-1));
             return (bool)f(0,0,0,s1,s2,s3,dp);
         }
