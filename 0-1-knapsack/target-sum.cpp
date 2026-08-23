@@ -46,12 +46,13 @@ class Solution
             }
             for(int i=n-1;i>=0;i--)
             {
-                for(auto &p:dp[i+1])
+                for(int j=-sum;j<=sum;j++)
                 {
-                    int j=p.first;
-                    int ways=p.second;
-                    dp[i][j+nums[i]]+=ways;
-                    dp[i][j-nums[i]]+=ways;
+                    int plus=0;
+                    int minus=0;
+                    if(j-nums[i]>=-sum) plus=dp[i+1][j-nums[i]];
+                    if(j+nums[i]<=sum)  minus=dp[i+1][j+nums[i]];
+                    dp[i][j]=plus+minus;
                 }
             }
             return dp[0][target];
