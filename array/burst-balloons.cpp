@@ -17,6 +17,14 @@ class Solution
     public:
         int f(int l,int r,vector<vector<int>> &dp,vector<int>& nums)
         {
+            if(l>r)
+            {
+                return 0;
+            }
+            if(dp[l][r]!=-1)
+            {
+                return dp[l][r];
+            }
             int k=l+(r-l)/2;
             int ans=0;
             for(int k=l;k<=r;k++)
