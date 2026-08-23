@@ -16,33 +16,6 @@ using namespace std;
 class Solution 
 {
     public:
-        int f(int i,int j,int k,string& s1,string& s2,string& s3,vector<vector<int>>& dp)
-        {
-            //base case
-            if(k>=s3.size())
-            {
-                return 1;
-            }
-            if(i>=s1.size() && j>=s2.size())
-            {
-                return 1;
-            }
-            if(dp[i][j]!=-1)
-            {
-                return dp[i][j];
-            }
-            int take1=0;
-            int take2=0;
-            if(i<s1.size() && s1[i]==s3[k])
-            {
-                take1=f(i+1,j,k+1,s1,s2,s3,dp);
-            }
-            if(j<s2.size() && s2[j]==s3[k])
-            {
-                take2=f(i,j+1,k+1,s1,s2,s3,dp);
-            }
-            return dp[i][j]=take1 || take2;
-        }
         bool isInterleave(string s1, string s2, string s3) 
         {
             int x=s1.size();
@@ -61,6 +34,29 @@ class Solution
                 return false;
             }
             vector<vector<int>> dp(x+1,vector<int>(y+1,-1));
-            return (bool)f(0,0,0,s1,s2,s3,dp);
+            dp[x][y]=1;
+            for(int i=x;i>=0;i--)
+            {
+                for(int j=y;j>=0;j--)
+                {
+                    if(i==x && j==y)
+                    {
+                        continue;
+                    }
+                    int take1=0;
+                    int take2=0;
+                    int k=i+j;
+                    if(i<x && s1[i]==s3[k])
+                    {
+                        take1=dp[i+1][j];
+                    }
+                    if(j<s2.size() && s2[j]==s3[k])
+                    {
+                        take2=dp[i][j+1];
+                    }
+                    dp[i][j]=take1 || take2;
+                }
+            }
+            return (bool)dp[0][0];
         }
 };
