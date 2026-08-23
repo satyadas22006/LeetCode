@@ -47,6 +47,15 @@ class Solution
         {
             int x=s1.size();
             int y=s2.size();
+            int z=s3.size();
+            if(x==0 && y==0)
+            {
+                if(z==0)
+                {
+                    return true;
+                }
+                return false;
+            }
             vector<vector<int>> dp(x+1,vector<int>(y+1,-1));
             return (bool)f(0,0,0,s1,s2,s3,dp);
         }
