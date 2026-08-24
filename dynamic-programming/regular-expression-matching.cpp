@@ -28,19 +28,20 @@ class Solution
             }
             int ans=0;
             bool match=false;
-            if(i<s.size() &&(s[i]==p[j] || p[j]=='.'))
+            if(i<s.size() && (s[i]==p[j] || p[j]=='.'))
             {
                 match=true;
-            }  
+            }
             if(j+1<p.size() && p[j+1]=='*')
             {
+                //skip the start 0 time
                 int skip=f(i,j+2,s,p,dp);
                 int take=0;
                 if(match)
                 {
                     take=f(i+1,j,s,p,dp);
                 }
-                ans=skip || take;
+                ans= take || skip;
             }
             else
             {
