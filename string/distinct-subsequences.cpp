@@ -27,8 +27,8 @@ class Solution
             {
                 for(int j=t.size()-1;j>=0;j--)
                 {
-                    int take=0;
-                    int not_take=dp[i+1][j];
+                    long long take=0;
+                    long long not_take=dp[i+1][j];
                     if(s[i]==t[j])
                     {
                         take=dp[i+1][j+1];
