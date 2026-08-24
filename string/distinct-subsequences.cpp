@@ -18,7 +18,7 @@ class Solution
     public:
         int numDistinct(string s, string t) 
         {
-            vector<vector<int>> dp(s.size()+1,vector<int>(t.size()+1,0));
+            vector<vector<long long>> dp(s.size()+1,vector<long long>(t.size()+1,0));
             for(int i=0;i<=s.size();i++)
             {
                 dp[i][t.size()]=1;
