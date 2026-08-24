@@ -18,7 +18,7 @@ class Solution
     public:
         int numDistinct(string s, string t) 
         {
-            vector<vector<long long>> dp(s.size()+1,vector<long long>(t.size()+1,0));
+            vector<vector<int>> dp(s.size()+1,vector<int>(t.size()+1,0));
             for(int i=0;i<=s.size();i++)
             {
                 dp[i][t.size()]=1;
@@ -27,8 +27,8 @@ class Solution
             {
                 for(int j=t.size()-1;j>=0;j--)
                 {
-                    long long take=0;
-                    long long not_take=dp[i+1][j];
+                    int take=0;
+                    int not_take=dp[i+1][j];
                     if(s[i]==t[j])
                     {
                         take=dp[i+1][j+1];
