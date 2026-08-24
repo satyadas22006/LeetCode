@@ -16,37 +16,27 @@ using namespace std;
 class Solution 
 {
     public:
-        int f(int i,int j,string& s,string& t,vector<vector<int>>& dp)
-        {
-            
-            if(j==t.size())
-            {
-                //i have made it
-                return 1;
-            }
-            if(i>=s.size())
-            {
-                return 0;
-            }
-            if(dp[i][j]!=-1)
-            {
-                return dp[i][j];
-            }
-
-            //if index equal then either take or not take
-            int take=0;
-            int not_take=0;
-            if(s[i]==t[j])
-            {
-                take=f(i+1,j+1,s,t,dp);
-                //not_take=f(i+1,j,s,t,dp);
-            }
-            not_take=f(i+1,j,s,t,dp);
-            return dp[i][j]=take+not_take;
-        }
         int numDistinct(string s, string t) 
         {
-            vector<vector<int>> dp(s.size()+1,vector<int>(t.size()+1,-1));
-            return f(0,0,s,t,dp);
+            vector<vector<int>> dp(s.size()+1,vector<int>(t.size()+1,0));
+            for(int i=0;i<=s.size();i++)
+            {
+                dp[i][t.size()]=1;
+            }
+            for(int i=s.size()-1;i>=0;i--)
+            {
+                for(int j=t.size()-1;j>=0;j--)
+                {
+                    int take=0;
+                    int not_take=dp[i+1][j];
+                    if(s[i]==t[j])
+                    {
+                        take=dp[i+1][j+1];
+                    }
+
+                    dp[i][j]=take+not_take;
+                }
+            }
+            return dp[0][0];
         }
 };
