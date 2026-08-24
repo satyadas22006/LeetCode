@@ -34,7 +34,7 @@ class Solution
                     {
                         j++;
                     }
-                    else if(j+1<p.size() && p[j+1]!='*')
+                    else if(j+1<p.size() && p[j+1]=='*')
                     {
                         j+=2;
                     }
