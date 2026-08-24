@@ -18,36 +18,53 @@ class Solution
     public:
         int f(int i,int j,string& s,string& p,vector<vector<int>> &dp)
         {
-            if(i==s.size())
+            if(i==s.size() && j==p.size())
             {
-                //s bangya
                 return 1;
             }
             if(j==p.size())
             {
-                //s nhi bana but p khtm hogya
                 return 0;
+            }
+            if(i==s.size())
+            {
+                while(j<p.size())
+                {
+                    if(p[j]=='*')
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                return 1;
             }
             if(dp[i][j]!=-1)
             {
                 return dp[i][j];
             }
             int ans=0;
-            if(s[i]==p[j])
+            if(s[i]==p[j] || p[j]=='.')
             {
                 //direct matching
-                ans=ans || f(i+1,j+1,s,p,dp);
+                ans=f(i+1,j+1,s,p,dp);
             }
-            if(p[j]=='.')
-            {
-                //cud be anything nice move to next
-                ans=ans || f(i+1,j+1,s,p,dp);
-            }
-            if(p[j]=='*')
+            else if(p[j]=='*')
             {
                 if(j-1>=0 && (s[i]==p[j-1] || p[j-1]=='.'))
                 {
-                    ans= ans || f(i+1,j,s,p,dp);
+                    //2 choices use * and stay at *
+                    //or use * zero times, skip *
+                    int take=f(i+1,j,s,p,dp);
+                    int skip=f(i,j+1,s,p,dp);
+                    ans=take || skip;
+                }
+                else
+                {
+                    //cant use * so skip it
+                    ans=f(i,j+1,s,p,dp);
                 }
             }
             return dp[i][j]=ans;
@@ -56,7 +73,7 @@ class Solution
         {
             int m=s.size();
             int n=p.size();
-            vector<vector<int>> dp(m,vector<int>(n,-1));
+            vector<vector<int>> dp(m+1,vector<int>(n+1,-1));
             return f(0,0,s,p,dp);
         }
 };
