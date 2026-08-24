@@ -18,57 +18,35 @@ class Solution
     public:
         int f(int i,int j,string& s,string& p,vector<vector<int>> &dp)
         {
-            if(i==s.size() && j==p.size())
-            {
-                return 1;
-            }
             if(j==p.size())
             {
-                return 0;
-            }
-            if(i==s.size())
-            {
-                while(j<p.size())
-                {
-                    if(p[j]=='*')
-                    {
-                        j++;
-                    }
-                    else if(j+1<p.size() && p[j+1]=='*')
-                    {
-                        j+=2;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                }
-                return 1;
+                return i==s.size();
             }
             if(dp[i][j]!=-1)
             {
                 return dp[i][j];
             }
             int ans=0;
-            if(s[i]==p[j] || p[j]=='.')
+            bool match=false;
+            if(i<s.size() &&(s[i]==p[j] || p[j]=='.'))
             {
-                //direct matching
-                ans=f(i+1,j+1,s,p,dp);
-            }
-            else if(p[j]=='*')
+                match=true;
+            }  
+            if(j+1<p.size() && p[j+1]=='*')
             {
-                if(j-1>=0 && (s[i]==p[j-1] || p[j-1]=='.'))
+                int skip=f(i,j+2,s,p,dp);
+                int take=0;
+                if(match)
                 {
-                    //2 choices use * and stay at *
-                    //or use * zero times, skip *
-                    int take=f(i+1,j,s,p,dp);
-                    int skip=f(i,j+1,s,p,dp);
-                    ans=take || skip;
+                    take=f(i+1,j,s,p,dp);
                 }
-                else
+                ans=skip || take;
+            }
+            else
+            {
+                if(match)
                 {
-                    //cant use * so skip it
-                    ans=f(i,j+1,s,p,dp);
+                    ans=f(i+1,j+1,s,p,dp);
                 }
             }
             return dp[i][j]=ans;
