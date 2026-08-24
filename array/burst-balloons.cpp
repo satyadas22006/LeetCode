@@ -19,17 +19,16 @@ class Solution
         {
             if(l>r)
             {
-                return 0;
+                return 0; 
             }
             if(dp[l][r]!=-1)
             {
                 return dp[l][r];
             }
-            int k=l+(r-l)/2;
             int ans=0;
             for(int k=l;k<=r;k++)
             {
-                int coins=nums[l-1]*nums[k]*nums[r+1]+f(l,k-1,dp,nums)+f(k+1,r,dp,nums);
+                int coins=nums[k]*nums[l-1]*nums[r+1]+f(l,k-1,dp,nums)+f(k+1,r,dp,nums);
                 ans=max(ans,coins);
             }
             return dp[l][r]=ans;
