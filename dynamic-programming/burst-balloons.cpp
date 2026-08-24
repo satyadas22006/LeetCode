@@ -15,24 +15,6 @@ using namespace std;
 class Solution 
 {
     public:
-        int f(int l,int r,vector<vector<int>> &dp,vector<int>& nums)
-        {
-            if(l>r)
-            {
-                return 0; 
-            }
-            if(dp[l][r]!=-1)
-            {
-                return dp[l][r];
-            }
-            int ans=0;
-            for(int k=l;k<=r;k++)
-            {
-                int coins=nums[k]*nums[l-1]*nums[r+1]+f(l,k-1,dp,nums)+f(k+1,r,dp,nums);
-                ans=max(ans,coins);
-            }
-            return dp[l][r]=ans;
-        }
         int maxCoins(vector<int>& nums) 
         {
             //2 things in a state
@@ -40,8 +22,20 @@ class Solution
             nums.insert(nums.begin(),1);
             nums.push_back(1);
             int n=nums.size();
-            vector<vector<int>> dp(n,vector<int>(n,-1));
-
-            return f(1,n-2,dp,nums);
+            vector<vector<int>> dp(n,vector<int>(n,0));
+            for(int l=n-2;l>=1;l--)
+            {
+                for(int r=l;r<=n-2;r++)
+                {
+                    int ans=0;
+                    for(int k=l;k<=r;k++)
+                    {
+                        int coins=nums[l-1]*nums[k]*nums[r+1]+dp[l][k-1]+dp[k+1][r];
+                        ans=max(ans,coins);
+                    }
+                    dp[l][r]=ans;
+                }
+            }
+            return dp[1][n-2];
         }
 };
