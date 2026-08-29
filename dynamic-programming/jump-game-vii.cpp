@@ -13,22 +13,41 @@ class Solution
     public:
         bool canReach(string s, int minJump, int maxJump) 
         {
-            int n=s.size();
-            if(s[n-1]!='0' || s[0]!='0')
+            if(s[0]!='0' || s[s.size()-1]!='0')
             {
                 return false;
             }
-            vector<int>dp(n,0);
-            dp[0]=1;
-            int cnt=0;
-            for(int i=1;i<n;i++)
+            queue<int> q;
+            q.push(0);
+            int r=INT_MIN;
+            while(!q.empty())
             {
-                int add=i-minJump;
-                if(add>=0 && dp[add]) cnt++;
-                int remove=i-maxJump-1;
-                if(remove>=0 && dp[remove]) cnt--;
-                if(s[i]=='0' && cnt>0) dp[i]=1;
+                int i=q.front();
+                q.pop();
+                int nl=i+minJump;
+                int nr=i+maxJump;
+                if(nl>=(int)s.size())
+                {
+                    continue;
+                }
+                nr=min(nr,(int)s.size()-1);
+                if(nr<=r)
+                {
+                    continue;
+                }
+                for(int j=nl;j<=nr;j++)
+                {
+                    if(s[j]=='0')
+                    {
+                        if(j==s.size()-1)
+                        {
+                            return true;
+                        }
+                        q.push(j);
+                    }
+                }
+                r=max(r,nr);
             }
-            return dp[n-1];
+            return false;
         }
 };
