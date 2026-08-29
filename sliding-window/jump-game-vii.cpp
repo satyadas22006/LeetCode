@@ -20,7 +20,7 @@ public:
 
             int start = max(i + minJump, farthest + 1);
             int end = min(i + maxJump, n - 1);
-
+            if(end<farthest) continue;
             for (int j = start; j <= end; j++)
             {
                 if (s[j] == '0')
