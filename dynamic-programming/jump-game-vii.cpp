@@ -1,37 +1,40 @@
-class Solution 
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution
 {
 public:
-    bool canReach(string s, int minJump, int maxJump) 
+    bool canReach(string s, int minJump, int maxJump)
     {
         int n = s.size();
 
-        if(s[0] != '0' || s[n - 1] != '0')
-            return false;
+        queue<int> q;
+        q.push(0);
 
-        int r = 0;
+        int farthest = 0;
 
-        for(int i = 0; i < n; i++)
+        while (!q.empty())
         {
-            if(i > r || s[i] != '0')
-                continue;
+            int i = q.front();
+            q.pop();
 
-            int nl = i + minJump;
-            int nr = min(i + maxJump, n - 1);
+            int start = max(i + minJump, farthest + 1);
+            int end = min(i + maxJump, n - 1);
 
-            for(int j = max(nl, r + 1); j <= nr; j++)
+            for (int j = start; j <= end; j++)
             {
-                if(s[j] == '0')
+                if (s[j] == '0')
                 {
-                    if(j == n - 1)
-                        return true;
+                    q.push(j);
 
-                    s[j] = '2';
+                    if (j == n - 1)
+                        return true;
                 }
             }
 
-            r = max(r, nr);
+            farthest = i + maxJump;
         }
 
-        return n == 1;
+        return false;
     }
 };
