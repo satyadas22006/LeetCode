@@ -2,7 +2,7 @@ class Solution {
 public:
     bool canReach(string s, int minJump, int maxJump) {
         int n = s.size();
-        if(s[n-1]!='0' || s[0]!='0') return false
+        if(s[n-1]!='0' || s[0]!='0') return false;
         int l = 0;
         int r = 0;
 
