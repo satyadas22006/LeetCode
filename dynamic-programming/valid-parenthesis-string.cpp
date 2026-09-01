@@ -66,6 +66,8 @@ class Solution
         }
         bool checkValidString(string s) 
         {
+            if(s[0]==')') return false;
+            if(s[s.size()-1]=='(') return false;
             //stack<char> store;
             vector<vector<int>> dp(s.size()+1,vector<int>(s.size()+1,-1));
             return f(0,0,s,dp);
