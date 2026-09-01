@@ -32,7 +32,6 @@ class Solution
                     }
                 }
                 groups[k][i]++;
-                break;
             }
             return true;
         }
