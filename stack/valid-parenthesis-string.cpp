@@ -1,75 +1,58 @@
-#include <iostream>
-#include <vector>
-#include <array>
-#include <string>
-#include <unordered_map>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <map>
-using namespace std;
-
 class Solution 
 {
-    public:
-        bool f(int i,int store,string& s,vector<vector<int>>& dp)
+public:
+    bool checkValidString(string s) 
+    {
+        int n = s.size();
+
+        vector<vector<int>> dp(
+            n + 1,
+            vector<int>(n + 1, 0)
+        );
+
+        // Base case:
+        // i == n
+        // valid only when number of open brackets = 0
+        dp[n][0] = 1;
+
+        for(int i = n - 1; i >= 0; i--)
         {
-            if(i>=s.size())
+            for(int j = 0; j <= n; j++)
             {
-                if(store!=0)
+                // j = number of unmatched '('
+
+                bool check = false;
+
+                if(s[i] == '(')
                 {
-                    return false;
+                    if(j + 1 <= n)
+                        check = dp[i + 1][j + 1];
                 }
-                return true;
-            }
-            int sz=store;
-            if(dp[i][sz]!=-1)
-            {
-                return dp[i][sz];
-            }
-            bool check=false;
-            if(s[i]=='(')
-            {
-                //store.push(s[i]);
-                check=check || f(i+1,store+1,s,dp);
-            }
-            else if(s[i]==')')
-            {
-                if(store)
+
+                else if(s[i] == ')')
                 {
-                    store--;
+                    if(j > 0)
+                        check = dp[i + 1][j - 1];
                 }
-                else
+
+                else // '*'
                 {
-                    return false;
+                    // take '*' as '('
+                    if(j + 1 <= n)
+                        check = check || dp[i + 1][j + 1];
+
+                    // take '*' as ')'
+                    if(j > 0)
+                        check = check || dp[i + 1][j - 1];
+
+                    // take '*' as nothing
+                    check = check || dp[i + 1][j];
                 }
-                check= check || f(i+1,store,s,dp);
+
+                dp[i][j] = check;
             }
-            else if(s[i]=='*')
-            {
-                //take 3 possibilities
-                //take it as (
-                store++;
-                check=check || f(i+1,store,s,dp);
-                store--;
-                //take it as )
-                if(store)
-                {
-                    store--;
-                    check=check || f(i+1,store,s,dp);
-                    store++;
-                }
-                //take it as nothing
-                check=check || f(i+1,store,s,dp);
-            }
-            return dp[i][sz]=check;
         }
-        bool checkValidString(string s) 
-        {
-            if(s[0]==')') return false;
-            if(s[s.size()-1]=='(') return false;
-            //stack<char> store;
-            vector<vector<int>> dp(s.size()+1,vector<int>(s.size()+1,-1));
-            return f(0,0,s,dp);
-        }
+
+        return dp[0][0];
+    }
 };
