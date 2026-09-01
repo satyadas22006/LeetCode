@@ -1,3 +1,13 @@
+#include <iostream>
+#include <vector>
+#include <array>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include <map>
+using namespace std;
 class Solution 
 {
 public:
@@ -18,12 +28,13 @@ public:
             if(mp[x] == 0)
                 continue;
 
-            for(int j = 0; j < groupSize; j++)
+            for(int j=0;j<groupSize;j++)
             {
-                if(mp[x + j] == 0)
+                if(mp[x+j]==0)
+                {
                     return false;
-
-                mp[x + j]--;
+                }
+                mp[x+j]--;
             }
         }
 
