@@ -37,6 +37,7 @@ class Solution
                 max3=max(max3,triplets[i][2]);
                 if(max3>target[2]) return false;
             }
-            return (blacklist.size()==triplets.size())? false : true ;            
+            if(max1!=target[0] || max2!=target[1] || max3!=target[2])   return false;
+            return true;            
         }
 };
