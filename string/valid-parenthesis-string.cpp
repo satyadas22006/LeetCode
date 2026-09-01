@@ -22,7 +22,8 @@ class Solution
                 }
                 return true;
             }
-            if(dp[i][store.size()]!=-1)
+            int sz=store.size();
+            if(dp[i][sz]!=-1)
             {
                 return dp[i][store.size()];
             }
@@ -57,7 +58,7 @@ class Solution
                 //take it as nothing
                 check=check || f(i+1,store,s,dp);
             }
-            return dp[i][store.size()]=check;
+            return dp[i][sz]=check;
         }
         bool checkValidString(string s) 
         {
