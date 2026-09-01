@@ -14,27 +14,18 @@ class Solution
     public:
         int f(int count,int intank,int start_index,vector<int>& gas,vector<int>& cost)
         {
-            if(count>=gas.size())
+            if(count==gas.size())
             {
                 return 1;
             }
-            if(start_index>=gas.size())
-            {
-                start_index%=gas.size();
-            }
-            if(cost[start_index]>intank)
+            int n=gas.size();
+            if(intank<cost[start_index])
             {
                 return 0;
             }
-            else
-            {
-                int res=f(count+1,intank-cost[start_index],start_index+1,gas,cost);
-                if(res==1)
-                {
-                    return 1;
-                }
-            }
-            return 0;
+            int next=(start_index+1)%n;
+            int newtank=intank-cost[start_index]+gas[next];
+            return f(count+1,newtank,next,gas,cost);
         }
         int canCompleteCircuit(vector<int>& gas, vector<int>& cost) 
         {
@@ -44,7 +35,7 @@ class Solution
                 //
                 if(gas[i]<cost[i])
                     continue;
-                else if(f(1,gas[i],i,gas,cost))
+                else if(f(0,gas[i],i,gas,cost)==1)
                 {
                     return i;
                 }
