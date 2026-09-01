@@ -44,7 +44,7 @@ class Solution
                 //
                 if(gas[i]<cost[i])
                     continue;
-                if(f(1,gas[i],i,gas,cost))
+                else if(f(0,gas[i],i,gas,cost))
                 {
                     return i;
                 }
