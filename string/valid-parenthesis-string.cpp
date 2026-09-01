@@ -1,58 +1,41 @@
+#include <iostream>
+#include <vector>
+#include <array>
+#include <string>
+#include <unordered_set>
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include <map>
+using namespace std;
+
 class Solution 
 {
-public:
-    bool checkValidString(string s) 
-    {
-        int n = s.size();
-
-        vector<vector<int>> dp(
-            n + 1,
-            vector<int>(n + 1, 0)
-        );
-
-        // Base case:
-        // i == n
-        // valid only when number of open brackets = 0
-        dp[n][0] = 1;
-
-        for(int i = n - 1; i >= 0; i--)
+    public:
+        bool checkValidString(string s)        
         {
-            for(int j = 0; j <= n; j++)
+            int min=0;
+            int max=0;
+            for(int i=0;i<s.size();i++)
             {
-                // j = number of unmatched '('
-
-                bool check = false;
-
-                if(s[i] == '(')
+                if(s[i]=='(')
                 {
-                    if(j + 1 <= n)
-                        check = dp[i + 1][j + 1];
+                    min++;
+                    max++;
                 }
-
-                else if(s[i] == ')')
+                else if(s[i]==')')
                 {
-                    if(j > 0)
-                        check = dp[i + 1][j - 1];
+                    min--;
+                    max--;
                 }
-
-                else // '*'
+                else //*
                 {
-                    // take '*' as '('
-                    if(j + 1 <= n)
-                        check = check || dp[i + 1][j + 1];
-
-                    // take '*' as ')'
-                    if(j > 0)
-                        check = check || dp[i + 1][j - 1];
-
-                    // take '*' as nothing
-                    check = check || dp[i + 1][j];
+                    min--;
+                    max++;
                 }
-
-                dp[i][j] = check;
+                if(min<0) min=0;
+                if(max<0) return false;
             }
+            return (min==0);
         }
-
-        return dp[0][0];
-    }
 };
