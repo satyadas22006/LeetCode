@@ -12,34 +12,22 @@ using namespace std;
 class Solution 
 {
     public:
-        int f(int count,int intank,int start_index,vector<int>& gas,vector<int>& cost)
-        {
-            if(count==gas.size())
-            {
-                return 1;
-            }
-            int n=gas.size();
-            if(intank<cost[start_index])
-            {
-                return 0;
-            }
-            int next=(start_index+1)%n;
-            int newtank=intank-cost[start_index]+gas[next];
-            return f(count+1,newtank,next,gas,cost);
-        }
         int canCompleteCircuit(vector<int>& gas, vector<int>& cost) 
         {
             int n=gas.size();
+            int tank=0;
+            int start=0;
+            int total=0;
             for(int i=0;i<n;i++)
             {
-                //
-                if(gas[i]<cost[i])
-                    continue;
-                else if(f(0,gas[i],i,gas,cost)==1)
+                total=gas[i]-cost[i];
+                tank=gas[i]-cost[i];
+                if(tank<0)
                 {
-                    return i;
+                    start=i+1;
+                    tank=0;
                 }
             }
-            return -1;
+            return (total>=0)? start:-1;
         }
 };
