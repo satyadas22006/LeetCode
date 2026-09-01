@@ -20,8 +20,8 @@ class Solution
             int total=0;
             for(int i=0;i<n;i++)
             {
-                total=gas[i]-cost[i];
-                tank=gas[i]-cost[i];
+                total+=gas[i]-cost[i];
+                tank+=gas[i]-cost[i];
                 if(tank<0)
                 {
                     start=i+1;
