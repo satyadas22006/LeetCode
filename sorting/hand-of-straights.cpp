@@ -25,13 +25,15 @@ public:
 
         for(int x : hand)
         {
-            if(mp[x] == 0)
+            //
+            if(mp[x]==0)
                 continue;
-
             for(int j=0;j<groupSize;j++)
             {
+                //find all its consecutive
                 if(mp[x+j]==0)
                 {
+                    //means x is alone solo, nobody from behind x took it and theres noone after x
                     return false;
                 }
                 mp[x+j]--;
