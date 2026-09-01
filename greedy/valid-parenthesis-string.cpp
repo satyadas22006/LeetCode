@@ -22,7 +22,7 @@ class Solution
                 }
                 return true;
             }
-            if(s[i]=='*' && dp[i]!=-1)
+            if(dp[i]!=-1)
             {
                 return dp[i];
             }
@@ -56,7 +56,7 @@ class Solution
                 //take it as nothing
                 check=check || f(i+1,store,s,dp);
             }
-            return check;
+            return dp[i]=check;
         }
         bool checkValidString(string s) 
         {
