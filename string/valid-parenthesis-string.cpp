@@ -25,7 +25,7 @@ class Solution
             int sz=store.size();
             if(dp[i][sz]!=-1)
             {
-                return dp[i][store.size()];
+                return dp[i][sz];
             }
             bool check=false;
             if(s[i]=='(')
@@ -38,6 +38,10 @@ class Solution
                 if(store.size())
                 {
                     store.pop();
+                }
+                else
+                {
+                    return false;
                 }
                 check= check || f(i+1,store,s,dp);
             }
