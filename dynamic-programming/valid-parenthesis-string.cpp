@@ -12,7 +12,7 @@ using namespace std;
 class Solution 
 {
     public:
-        bool f(int i,stack<char>& store,string& s,vector<int>& dp)
+        bool f(int i,stack<char> store,string& s,vector<vector<int>>& dp)
         {
             if(i>=s.size())
             {
@@ -22,9 +22,9 @@ class Solution
                 }
                 return true;
             }
-            if(dp[i]!=-1)
+            if(dp[i][store.size()]!=-1)
             {
-                return dp[i];
+                return dp[i][store.size()];
             }
             bool check=false;
             if(s[i]=='(')
@@ -52,16 +52,17 @@ class Solution
                 {
                     store.pop();
                     check=check || f(i+1,store,s,dp);
+                    store.push('(');
                 }
                 //take it as nothing
                 check=check || f(i+1,store,s,dp);
             }
-            return dp[i]=check;
+            return dp[i][store.size()]=check;
         }
         bool checkValidString(string s) 
         {
             stack<char> store;
-            vector<int> dp(s.size(),-1);
+            vector<vector<int>> dp(s.size(),vector<int>(s.size(),-1));
             return f(0,store,s,dp);
         }
 };
