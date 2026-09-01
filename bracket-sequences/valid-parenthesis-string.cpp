@@ -62,7 +62,7 @@ class Solution
         bool checkValidString(string s) 
         {
             stack<char> store;
-            vector<vector<int>> dp(s.size(),vector<int>(s.size(),-1));
+            vector<vector<int>> dp(s.size()+1,vector<int>(s.size()+1,-1));
             return f(0,store,s,dp);
         }
 };
