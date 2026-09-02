@@ -29,7 +29,7 @@ class Solution
         {
             if(ratings[i+1]<ratings[i])
             {
-                hmm[i]=hmm[i+1]+1;
+                hmm[i]=max(hmm[i],hmm[i+1]+1);
             }
         }
         int sum=0;
