@@ -95,15 +95,14 @@ public:
             return;
         }
         //all are marked if and only if i and j has queen placed
-        for(int ni=0;ni<board.size();ni++)
+        if(i+1 < board.size())
         {
             for(int nj=0;nj<board.size();nj++)
             {
-                if(marked[ni][nj]==0)
+                if(marked[i+1][nj]==0)
                 {
-                    f(ni,nj,queensleft-1,marked,board,ans);
+                    f(i+1,nj,queensleft-1,marked,board,ans);
                 }
-
             }
         }
         board[i][j]='.';
