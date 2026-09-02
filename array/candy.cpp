@@ -18,29 +18,19 @@ class Solution
         //int hmm=0;
         int n=ratings.size();
         vector<int> hmm(n,1);
-        for(int i=0;i<n;i++)
+        for(int i=1;i<n;i++)
         {
-            //check if back or front is higher
-            //back higher
-            if(i-1>=0 && ratings[i-1]<ratings[i])
+            if(ratings[i-1]<ratings[i])
             {
-                //bigger than back then increase if equal or less
-                if(hmm[i-1]>=hmm[i])
-                {
-                    hmm[i]=hmm[i-1]+1;
-                }
+                hmm[i]=hmm[i-1]+1;
             }
-            if(i+1<n && ratings[i+1]<ratings[i])
+        }
+        for(int i=n-2;i>=0;i--)
+        {
+            if(ratings[i+1]<ratings[i])
             {
-                if(hmm[i+1]>=hmm[i])
-                {
-                    hmm[i]=hmm[i+1]+1;
-                }
+                hmm[i]=hmm[i+1]+1;
             }
-            // if(i+1<n && ratings[i+1]==ratings[i])
-            // {
-            //     hmm[i]=hmm[i+1]+1;
-            // }
         }
         int sum=0;
         for(auto i:hmm)
