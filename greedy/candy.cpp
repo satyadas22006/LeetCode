@@ -37,10 +37,10 @@ class Solution
                     hmm[i]=hmm[i+1]+1;
                 }
             }
-            if(i+1<n && ratings[i+1]==ratings[i])
-            {
-                hmm[i]=hmm[i+1]+1;
-            }
+            // if(i+1<n && ratings[i+1]==ratings[i])
+            // {
+            //     hmm[i]=hmm[i+1]+1;
+            // }
         }
         int sum=0;
         for(auto i:hmm)
