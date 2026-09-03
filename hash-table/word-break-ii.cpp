@@ -14,13 +14,13 @@ using namespace std;
 class Solution 
 {
     public:
-        void f(int start,int i,string& s,unordered_set<string>& mp,vector<string>& ans)
+        void f(int start,int i,string s,unordered_set<string>& mp,vector<string>& ans)
         {
             if(i>=s.size())
             {
                 //add the ans
                 //ans.push_back(s);
-                return ;
+                return;
             }
             string a=s.substr(start,i-start+1);
             if(mp.count(a))
