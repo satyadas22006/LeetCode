@@ -39,8 +39,8 @@ class Solution
             int ans=0;
             for(int i=0;i<heights.size();i++)
             {
-                int width=right[i]-left[i]-1;
-                ans=max(ans,heights[i]*width);
+                //int width=;
+                ans=max(ans,heights[i]*(right[i]-left[i]-1));
             }
             return ans;
         }
