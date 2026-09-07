@@ -13,16 +13,15 @@ class FreqStack {
 public:
     //stores count-> number mapping
     unordered_map<int,int> mp;
-    //stores freq and count(index)
     //stores number and freq mapp
     unordered_map<int,int> freq;
+    //stores freq and count(index)
     priority_queue<pair<int,int>> pq;
     int count=0;
     FreqStack() 
     {
         //freq,number
         //priority_queue<pair<int,int>> pq;
-        
     }
     
     void push(int val) 
@@ -39,6 +38,8 @@ public:
         //stores the freq and index
         auto x=pq.top();
         pq.pop();
+        int no=mp[x.second];
+        freq[no]--;
         return mp[x.second];
     }
 };
