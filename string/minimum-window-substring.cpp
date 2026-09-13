@@ -35,11 +35,12 @@ class Solution
             int r=0;
             int ans=INT_MAX;
             pair<int,int> coor={0,0};
-            while(r<=m)
+            while(r<m)
             {
                 //add right till all added
                 if(!valid(curr,contain))
                 {
+                    //if(r==m) break;
                     if(contain[s[r]])
                         curr[s[r]]++;
                     r++;
