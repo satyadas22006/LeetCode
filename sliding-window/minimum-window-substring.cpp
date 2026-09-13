@@ -12,59 +12,29 @@ using namespace std;
 class Solution 
 {
     public:
-        bool valid(unordered_map<char,int>& curr,unordered_map<char,int>& contain)
-        {
-            for(auto x:contain)
-            {
-                if(curr[x.first]<x.second) return false;
-            }
-            return true;
-        }
         string minWindow(string s, string t) 
         {
-            int m=s.size();
-            int n=t.size();
-            unordered_map<char,int> contain;
-            for(auto i:t)
-            {
-                contain[i]++;
-            }
-            unordered_map<char,int> curr;
-            if(t.empty() || n>m) return "";
+            if(s.empty() || t.empty() || s.length()<t.length()) return "";
+            vector<int> map(128,0);
+            int count=t.length();
             int l=0;
             int r=0;
-            int ans=INT_MAX;
-            pair<int,int> coor={0,0};
-            while(r<=m)
+            int minlen=INT_MAX;
+            int startindex=0;
+            for(char c:t) map[c]++;
+            while(r<s.length())
             {
-                //add right till all added
-                if(!valid(curr,contain))
+                if(map[s[r++]]-- > 0) count--;
+                while(count==0)
                 {
-                    if(r==m) break;
-                    if(contain.count(s[r]))
-                        curr[s[r]]++;
-                    r++;
-                }
-                else 
-                {
-                    if(r-l<ans)
+                    if(r-l<minlen)
                     {
-                        coor={l,r-1};
-                        ans=r-l;
+                        startindex=l;
+                        minlen=r-l;
                     }
-                    if(contain.count(s[l]))
-                        curr[s[l]]--;
-                    //l++;
-                    
-                    l++;
+                    if(map[s[l++]]++==0) count++;
                 }
             }
-            if(ans==INT_MAX) return "";
-            string temp="";
-            for(int i=coor.first;i<=coor.second;i++)
-            {
-                temp+=s[i];
-            }
-            return temp;
+            return minlen==INT_MAX ? "" : s.substr(startindex,minlen);
         }
 };
