@@ -45,7 +45,7 @@ class Solution
                         curr[s[r]]++;
                     r++;
                 }
-                while(valid(curr,contain)) 
+                else 
                 {
                     if(r-l<ans)
                     {
