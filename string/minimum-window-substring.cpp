@@ -12,7 +12,7 @@ using namespace std;
 class Solution 
 {
     public:
-        bool valid(unordered_map<char,int>& contain,unordered_map<char,int>& curr)
+        bool valid(unordered_map<char,int>& curr,unordered_map<char,int>& contain)
         {
             for(auto x:contain)
             {
@@ -35,30 +35,31 @@ class Solution
             int r=0;
             int ans=INT_MAX;
             pair<int,int> coor={0,0};
-            while(r<m)
+            while(r<=m)
             {
                 //add right till all added
                 if(!valid(curr,contain))
                 {
-                    //if(r==m) break;
-                    if(contain[s[r]])
+                    if(r==m) break;
+                    if(contain.count(s[r]))
                         curr[s[r]]++;
                     r++;
                 }
-                else 
+                while(valid(curr,contain)) 
                 {
                     if(r-l<ans)
                     {
                         coor={l,r-1};
                         ans=r-l;
                     }
-                    if(contain[s[l]])
+                    if(contain.count(s[l]))
                         curr[s[l]]--;
                     //l++;
                     
                     l++;
                 }
             }
+            if(ans==INT_MAX) return "";
             string temp="";
             for(int i=coor.first;i<=coor.second;i++)
             {
