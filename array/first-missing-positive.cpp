@@ -15,22 +15,11 @@ class Solution
             //vector<int> temp(n,0);
             for(int i=0;i<n;i++)
             {
-                if(nums[i]<=0 || nums[i]>n)
-                {
-                    continue;
+                while(nums[i]>0 && nums[i]<=n && nums[i]!=i+1)
+                {   
+                    //int x=nums[i]; //x=3, swap 3rd index and i
+                    swap(nums[i],nums[nums[i]-1]);
                 }
-                int x=nums[i]; //x=3, swap 3rd index and i
-                swap(nums[i],nums[x-1]);
-            }
-            for(int i=0;i<n;i++)
-            {
-                if(nums[i]==i+1) continue;
-                if(nums[i]<=0 || nums[i]>n)
-                {
-                    continue;
-                }
-                int x=nums[i];
-                nums[x-1] = x;
             }
             for(int i=0;i<n;i++)
             {
