@@ -27,7 +27,7 @@ class Solution
                     //reached i+2 now
                     continue;
                 }
-                if(((i+2<path.size()&& path[i+2]=='/') || i+2==path.size()-1) && path[i]=='.' && path[i+1]=='.')
+                if(((i+2<path.size()&& path[i+2]=='/') || i+2==path.size()) && path[i]=='.' && path[i+1]=='.')
                 {
                     // /../ prev directory ko remove from stack
                     if(!s.empty()) s.pop();
