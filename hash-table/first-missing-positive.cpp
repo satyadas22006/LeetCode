@@ -8,21 +8,24 @@
 using namespace std;
 class Solution 
 {
-
     public:
         int firstMissingPositive(vector<int>& nums) 
         {
-            unordered_map<int,int> mp;
-            int m=0;
-            for(int i:nums)
+            int n=nums.size();
+            vector<int> temp(n,0);
+            for(int i=0;i<n;i++)
             {
-                mp[i]++;
-                m=max(m,i);
+                if(nums[i]<=0 || nums[i]>n)
+                {
+                    continue;
+                }
+                int x=nums[i]; //valid
+                temp[x-1]=x;
             }
-            for(int i=1;i<=m;i++)
+            for(int i=0;i<n;i++)
             {
-                if(!mp[i]) return i;
+                if(temp[i]!=i+1) return i+1;
             }
-            return m+1;            
+            return n+1;
         }
 };
