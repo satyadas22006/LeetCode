@@ -15,6 +15,28 @@ public:
     {
         int m=nums1.size();
         int n=nums2.size();
+        if(m==0)
+        {
+            if(n%2!=0)
+            {
+                return nums2[n/2];
+            }
+            else 
+            {
+                return (nums2[n/2-1]+nums2[n/2])/2;
+            }
+        }
+        if(n==0)
+        {
+            if(m%2!=0)
+            {
+                return nums1[m/2];
+            }
+            else
+            {
+                return (nums1[m/2-1]+nums1[m/2])/2;
+            }
+        }
         int sum=m+n;
         int i=0,j=0;
         double ans=INT_MIN;
@@ -31,7 +53,7 @@ public:
         int count=0;
         while(true)
         {
-            if(nums1[i]>=nums2[j])
+            if(i<m && j<n && nums1[i]>=nums2[j])
             {
                 ans=nums1[i];
                 count++;
@@ -53,7 +75,7 @@ public:
                 }
                 if(i!=m-1) i++;
             }
-            else if(nums1[i]<=nums2[j])
+            else if(i<m && j<n && nums1[i]<=nums2[j])
             {
                 ans=nums2[j];
                 count++;
